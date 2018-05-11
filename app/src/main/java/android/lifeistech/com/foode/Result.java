@@ -35,7 +35,7 @@ public class Result {
 
 
 
-    //
+    //Geometryデータの取得
     public Geometry getGeometry() {
         return geometry;
     }
@@ -46,7 +46,7 @@ public class Result {
 
 
 
-    //
+    //iconデータの取得
     public String getIcon() {
         return icon;
     }
@@ -56,7 +56,7 @@ public class Result {
     }
 
 
-    //
+    //idデータの取得
     public String getId(){
         return id;
     }
@@ -67,7 +67,7 @@ public class Result {
 
 
 
-    //
+    //nameデータの取得
     public String getName() {
         return name;
     }
@@ -78,7 +78,7 @@ public class Result {
 
 
 
-    //
+    //place_idデータの取得
     public String getPlace_id() {
         return place_id;
     }
@@ -89,7 +89,7 @@ public class Result {
 
 
 
-    //
+    //ratingデータの取得
     public String getRating() {
         return rating;
     }
@@ -100,7 +100,7 @@ public class Result {
 
 
 
-    //
+    //typesデータの取得
     public String[] getTypes() {
         return types;
     }
