@@ -2,4 +2,6 @@
     <string name="app_name">Foode</string>
     <string name="title_activity_maps_10">Map</string>
     <string name="title_activity_maps__select">Map</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
 </resources>

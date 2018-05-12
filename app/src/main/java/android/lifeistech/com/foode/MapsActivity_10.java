@@ -1,20 +1,23 @@
 package android.lifeistech.com.foode;
 
+import android.*;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.*;
+import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -27,6 +30,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -35,28 +39,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import android.Manifest;
-import android.location.Location;
-import android.util.Log;
-import android.widget.Toast;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.maps.LocationSource;
-import android.lifeistech.com.foode.PlaceAPIService;
-import android.lifeistech.com.foode.Responce;
-import android.lifeistech.com.foode.Geometry;
-import android.lifeistech.com.foode.Result;
-import android.widget.Toast;
-import retrofit.Callback;
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
 
 
 
@@ -69,20 +63,23 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
     private PlaceAPIService mService;
 
-    String loc = null; //現在地取得
+    //FusedLocationProvider API
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
-    private double lat,lng;
-    private android.location.Location location;
+    //Location Setting API
     private SettingsClient settingsClient;
     private LocationSettingsRequest locationSettingsRequest;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
-    private String lastUpdateTime;
-    private Boolean requestingLocationUpdates;
+    private android.location.Location location;
+
+    private String lastUpDateTime;
+    private Boolean reqestingLocationUpdates;
     private static final int REQUEST_CHECK_SETTINGS = 0x1;
     private int priority = 0;
     private String textLog;
-    private FusedLocationProviderClient fusedLocationClient;
+
+
 
 
     private final String API_KEY = "AIzaSyAEJJjYOFLqiU550af8F4hRuO1bg1Ov-k4";
@@ -105,19 +102,23 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                 .build();
         mService = mRetrofit.create(PlaceAPIService.class);
 
-
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        //FusedLocationProviderClientの使用を可能にする
+        fusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(this);
         settingsClient = LocationServices.getSettingsClient(this);
 
         priority = 0;
 
+        //現在地の情報を求めるリクエストを渡して、結果が帰ってくる設定のメソッドの呼び出し
         createLocationCallback();
         createLocationRequest();
+        buildLocationSettingsRequest();
 
-        textLog = "onCreate()\n";
-        textView.setText(textLog);
-        Log.d("MainActivity",textLog);
+
+        //実際にMap上に現在地が表示されるようにデータをップロードするメソッド
+        startLocationUpdates();
+        stopLocationUpdates();
+
     }
 
 
@@ -144,20 +145,133 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
 
 
+    public void search(View v){
+    }
 
-    private void createLocationCallback() {
-        locationCallback = new LocationCallback() {
+
+    public void random(View v) {
+        Random random = new Random();
+        int number;
+        number = random.nextInt(11);
+
+
+
+        if (number == 0) {
+            textView.setText("オムライス");
+        } else if (number == 1) {
+            textView.setText("うどん");
+        } else if (number == 2) {
+            textView.setText("カレー");
+        } else if (number == 3) {
+            textView.setText("焼肉");
+        } else if (number == 4) {
+            textView.setText("鍋");
+        } else if (number == 5) {
+            textView.setText("ラーメン");
+        } else if (number == 6) {
+            textView.setText("海鮮");
+        } else if (number == 7) {
+            textView.setText("お好み焼き");
+        } else if (number == 8) {
+            textView.setText("串カツ");
+        } else if (number == 9) {
+            textView.setText("とんかつ");
+        }else if (number == 10){
+            textView.setText("寿司");
+        }
+    }
+
+    public void back(View v) {
+        finish();
+    }
+
+
+
+
+
+    //locationのコールバック位を受け取る
+    public void createLocationCallback(){
+        locationCallback = new LocationCallback(){
             @Override
-            public void onLocationResult(LocationResult locationResult) {
+            public void onLocationResult(LocationResult locationResult){
                 super.onLocationResult(locationResult);
 
                 location = locationResult.getLastLocation();
 
-
-                lastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+                lastUpDateTime = DateFormat.getTimeInstance().format(new Date());
                 updateLocationUI();
+
+
+
             }
         };
+
+    }
+
+
+    private void updateLocationUI() {
+        // getLastLocation()からの情報がある場合のみ
+        if (location != null) {
+
+            String fusedName[] = {
+                    "Latitude", "Longitude", "Accuracy",
+                    "Altitude", "Speed", "Bearing"
+            };
+
+            double fusedData[] = {
+                    location.getLatitude(),
+                    location.getLongitude(),
+                    location.getAccuracy(),
+                    location.getAltitude(),
+                    location.getSpeed(),
+                    location.getBearing()
+            };
+
+            StringBuilder strBuf =
+                    new StringBuilder("---------- UpdateLocation ---------- \n");
+
+            for(int i=0; i< fusedName.length; i++) {
+                strBuf.append(fusedName[i]);
+                strBuf.append(" = ");
+                strBuf.append(String.valueOf(fusedData[i]));
+                strBuf.append("\n");
+            }
+
+            strBuf.append("Time");
+            strBuf.append(" = ");
+            strBuf.append(lastUpDateTime);
+            strBuf.append("\n");
+
+
+        }
+
+    }
+
+
+    public void searchMap(String argloc){
+
+        Call<Responce> mResultCall = mService.requestPlaces(argloc,750,"restaurant", API_KEY);
+
+        mResultCall.enqueue(new retrofit2.Callback<Responce>() {
+            @Override
+            public void onResponse(Call<Responce> call, Response<Responce> response) {
+                List<Result> results = response.body().getResults();
+
+                for (Result r:results){
+                    Log.d("geometry", r.getGeometry() + "\n");
+                    Log.d("icon", r.getIcon() + "\n");
+                    Log.d("id", r.getId() + "\n");
+                    Log.d("name",r.getName() + "\n");
+                    Log.d("place_id", r.getPlace_id() + "\n");
+                    Log.d("rating", r.getRating() + "\n");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Responce> call, Throwable t){
+
+            }
+        });
     }
 
 
@@ -207,97 +321,74 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
     }
 
+    // 端末で測位できる状態か確認する。wifi, GPSなどがOffになっているとエラー情報のダイアログが出る
+    private void buildLocationSettingsRequest() {
+        LocationSettingsRequest.Builder builder =
+                new LocationSettingsRequest.Builder();
 
-    private void updateLocationUI() {
-        // getLastLocation()からの情報がある場合のみ
-        if (location != null) {
+        builder.addLocationRequest(locationRequest);
+        locationSettingsRequest = builder.build();
+    }
 
-            Log.d("location", String.valueOf(location));
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        switch (requestCode){
+            //最初にstartResolutionForResult()に与えられたリクエストコードを確認する
+            case REQUEST_CHECK_SETTINGS:
+                switch (requestCode){
+                    case Activity.RESULT_OK:
+                        Log.i("debug", "User agreed to make required location settings changes.");
+                        // Nothing to do. startLocationupdates() gets called in onResume again.
+                        break;
 
-
-            String fusedName[] = {
-                    "Latitude", "Longitude"
-            };
-
-            double fusedData[] = {
-                    location.getLatitude(),
-                    location.getLongitude(),
-
-            };
-
-
-            StringBuilder strBuf =
-                    new StringBuilder("---------- UpdateLocation ---------- \n");
-
-            for(int i=0; i< fusedName.length; i++) {
-                strBuf.append(fusedName[i]);
-                strBuf.append(" = ");
-                strBuf.append(String.valueOf(fusedData[i]));
-                strBuf.append("\n");
-            }
-
-            strBuf.append("Time");
-            strBuf.append(" = ");
-            strBuf.append(lastUpdateTime);
-            strBuf.append("\n");
-
-            textLog += strBuf;
-            textView.setText(textLog);
-
-            lat = location.getLatitude();
-            lng = location.getLongitude();
-
-            StringBuilder strBuf2 = new StringBuilder();
-            strBuf2.append(lat);
-            strBuf2.append(",");
-            strBuf2.append(lng);
-
-            loc = String.valueOf(strBuf2);
-            Log.d("loc",loc);
-
-            searchMap(loc);
+                    case Activity.RESULT_CANCELED:
+                        Log.i("debug", "User chose not to make required location settings changes.");
+                        reqestingLocationUpdates = false;
+                        break;
+                }
+                break;
 
         }
-
     }
 
 
-
-    private void startLocationUpdates() {
-        // Begin by checking if the device has the necessary location settings.
+    // FusedLocationApiによるlocation updatesをリクエスト
+    private void startLocationUpdates(){
+        //デバイスが必要な場所の設定を持っているかどうかを調べる
         settingsClient.checkLocationSettings(locationSettingsRequest)
-                .addOnSuccessListener(this,
-                        new OnSuccessListener<LocationSettingsResponse>() {
-                            @Override
-                            public void onSuccess(
-                                    LocationSettingsResponse locationSettingsResponse) {
-                                Log.i("debug", "All location settings are satisfied.");
+                .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+                    @Override
+                    public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                        Log.i("debug", "All location settings are satisfied.");
 
-                                // パーミッションの確認
-                                if (ActivityCompat.checkSelfPermission(
-                                        MapsActivity_10.this,
-                                        android.Manifest.permission.ACCESS_FINE_LOCATION) !=
-                                        PackageManager.PERMISSION_GRANTED
-                                        && ActivityCompat.checkSelfPermission(
-                                        MapsActivity_10.this,
-                                        android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                                        PackageManager.PERMISSION_GRANTED) {
+                        // パーミッションの確認
+                        if(ActivityCompat.checkSelfPermission(
+                                MapsActivity_10.this,
+                                android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                                PackageManager.PERMISSION_GRANTED
+                                && ActivityCompat.checkSelfPermission(
+                                MapsActivity_10.this,
+                                android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                                PackageManager.PERMISSION_GRANTED) {
+                            // TODO:呼び出しを検討する
+                            // ActivityCompat＃requestPermissions
+                            //ここで不足しているアクセス権を要求し、次に上書きする
+                            // public void onRequestPermissionsResult（int requestCode、String []アクセス許可、
+                            // int [] grantResults）
+                            //ユーザがパーミッションを許可した場合を処理します。ドキュメントを参照してください
+                            //詳細についてはActivityCompat＃requestPermissionsのドキュメントを参照してください。
+                            return;
+                        }
+                        fusedLocationProviderClient.requestLocationUpdates(
+                                locationRequest, locationCallback, Looper.myLooper());
 
-                                    // TODO: Consider calling
-                                    //    ActivityCompat#requestPermissions
-                                    // here to request the missing permissions, and then overriding
-                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                    //                                          int[] grantResults)
-                                    // to handle the case where the user grants the permission. See the documentation
-                                    // for ActivityCompat#requestPermissions for more details.
-                                    return;
-                                }
-                                fusedLocationClient.requestLocationUpdates(
-                                        locationRequest, locationCallback, Looper.myLooper());
 
-                            }
-                        })
 
+                    }
+
+
+
+                })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -325,89 +416,49 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                                 Toast.makeText(MapsActivity_10.this,
                                         errorMessage, Toast.LENGTH_LONG).show();
 
-                                requestingLocationUpdates = false;
+                                reqestingLocationUpdates = false;
                         }
-
                     }
                 });
 
-        requestingLocationUpdates = true;
-
+        reqestingLocationUpdates = true;
     }
 
 
 
+    private void stopLocationUpdates() {
+        textLog += "onStop()\n";
+        textView.setText(textLog);
 
-    public void searchMap(String argloc){
-
-        Call<Responce> mResultCall = mService.requestPlaces(argloc,750,"restaurant", API_KEY);
-
-        mResultCall.enqueue(new retrofit2.Callback<Responce>() {
-            @Override
-            public void onResponse(Call<Responce> call, Response<Responce> response) {
-                List<Result> results = response.body().getResults();
-
-                for (Result r:results){
-                    Log.d("geometry", r.getGeometry() + "\n");
-                    Log.d("icon", r.getIcon() + "\n");
-                    Log.d("id", r.getId() + "\n");
-                    Log.d("name",r.getName() + "\n");
-                    Log.d("place_id", r.getPlace_id() + "\n");
-                    Log.d("rating", r.getRating() + "\n");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Responce> call, Throwable t){
-
-            }
-        });
-    }
+        if (!reqestingLocationUpdates) {
+            Log.d("debug", "stopLocationUpdates: " +
+                    "updates never requested, no-op.");
 
 
-
-    public void search(View v) {
-        startLocationUpdates();
-    }
-
-
-    public void random(View v) {
-        Random random = new Random();
-        int number;
-        number = random.nextInt(11);
-
-
-
-        if (number == 0) {
-            textView.setText("オムライス");
-        } else if (number == 1) {
-            textView.setText("うどん");
-        } else if (number == 2) {
-            textView.setText("カレー");
-        } else if (number == 3) {
-            textView.setText("焼肉");
-        } else if (number == 4) {
-            textView.setText("鍋");
-        } else if (number == 5) {
-            textView.setText("ラーメン");
-        } else if (number == 6) {
-            textView.setText("海鮮");
-        } else if (number == 7) {
-            textView.setText("お好み焼き");
-        } else if (number == 8) {
-            textView.setText("串カツ");
-        } else if (number == 9) {
-            textView.setText("とんかつ");
-        }else if (number == 10){
-            textView.setText("寿司");
+            return;
         }
+
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+                .addOnCompleteListener(this,
+                        new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                reqestingLocationUpdates = false;
+                            }
+                        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // バッテリー消費を鑑みLocation requestを止める
+        stopLocationUpdates();
     }
 
 
 
-    public void back(View v) {
-        finish();
-    }
+
+
 
 
 }
