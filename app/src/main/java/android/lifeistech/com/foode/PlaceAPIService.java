@@ -2,21 +2,21 @@ package android.lifeistech.com.foode;
 
 
 import retrofit.Callback;
-import retrofit.http.GET;
 import retrofit.http.Headers;
-import retrofit.http.Query;
 import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * Created by kawamuradaisuke on 2018/05/11.
  */
 
 public interface PlaceAPIService {
-    @Headers("Accept-Language: ja")
-    @GET("maps/api/place/search/json?")
-    Call<Responce> requestPlaces(@Query("location")String location,
+    //@Headers("Accept-Language: ja")
+    @GET("/maps/api/place/search/json?")
+    Call<> requestPlaces(@Query("location")String location,
                                  @Query("radius")int radius,
-                                 @Query("keyward")String keyword,
+                                 @Query("keyword")String keyword,
                                  @Query("key")String key);
 
 }

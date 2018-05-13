@@ -103,6 +103,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                 .build();
         mService = mRetrofit.create(PlaceAPIService.class);
 
+
         //FusedLocationProviderClientの使用を可能にする
         fusedLocationProviderClient =
                 LocationServices.getFusedLocationProviderClient(this);
@@ -153,12 +154,11 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
 
     public void search(View v){
+        LatLng osaka = new LatLng(34.6937378, 135.5021651);
 
+        loc = String.valueOf(osaka);
 
-        /*APIを叩いて受け取った情報を、検索ボタン（OnClick search）を
-        クリックした時に、GoogleMap画面内に表示させる*/
-
-
+        searchMap(loc);
     }
 
 
@@ -260,7 +260,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
             loc = String.valueOf(strBuf2);
             Log.d("loc",loc);
 
-            searchMap(loc);
+
         }
     }
 
@@ -278,6 +278,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         mResultCall.enqueue(new retrofit2.Callback<Responce>() {
             @Override
             public void onResponse(Call<Responce> call, Response<Responce> response) {
+
                 List<Result> results = response.body().getResults();
 
                 for (Result r:results){
