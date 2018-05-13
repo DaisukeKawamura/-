@@ -42,7 +42,8 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="15dp"
         android:layout_weight="6"
-        tools:context="android.lifeistech.com.foode.MapsActivity_10" />
+        tools:context="android.lifeistech.com.foode.MapsActivity_10"
+        map:cameraZoom="12.0"/>
 
 
         <LinearLayout

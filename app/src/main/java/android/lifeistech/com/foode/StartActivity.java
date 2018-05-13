@@ -31,7 +31,8 @@ public class StartActivity extends AppCompatActivity {
     public void free(View v) {
 
         if (Build.VERSION.SDK_INT >= 23) {
-            checkPermission();
+            MapsActivity();
+          checkPermission();
         } else {
             MapsActivity();
         }

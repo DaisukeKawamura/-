@@ -51,10 +51,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-
-
-
-
 public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -77,10 +73,9 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
     private Boolean reqestingLocationUpdates;
     private static final int REQUEST_CHECK_SETTINGS = 0x1;
     private int priority = 0;
-    private String textLog;
+    private double lat,lng;
 
-
-
+    String loc = null;
 
     private final String API_KEY = "AIzaSyAEJJjYOFLqiU550af8F4hRuO1bg1Ov-k4";
 
@@ -109,12 +104,12 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
         priority = 0;
 
+
+        //「位置情報関連のメソッド」
         //現在地の情報を求めるリクエストを渡して、結果が帰ってくる設定のメソッドの呼び出し
         createLocationCallback();
         createLocationRequest();
         buildLocationSettingsRequest();
-
-
         //実際にMap上に現在地が表示されるようにデータをップロードするメソッド
         startLocationUpdates();
         stopLocationUpdates();
@@ -136,25 +131,35 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng osaka = new LatLng(34.6937378, 135.5021651);
+        mMap.addMarker(new MarkerOptions().position(osaka).title("大阪"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(osaka));
+
     }
+
 
 
 
 
 
     public void search(View v){
+
+
+        /*APIを叩いて受け取った情報を、検索ボタン（OnClick search）を
+        クリックした時に、GoogleMap画面内に表示させる*/
+
+
     }
+
+
+
+
 
 
     public void random(View v) {
         Random random = new Random();
         int number;
         number = random.nextInt(11);
-
-
 
         if (number == 0) {
             textView.setText("オムライス");
@@ -181,9 +186,14 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
+
+
+
     public void back(View v) {
         finish();
     }
+
+
 
 
 
@@ -201,12 +211,14 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                 lastUpDateTime = DateFormat.getTimeInstance().format(new Date());
                 updateLocationUI();
 
-
-
             }
         };
-
     }
+
+
+
+
+
 
 
     private void updateLocationUI() {
@@ -243,9 +255,26 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
             strBuf.append("\n");
 
 
-        }
+            lat = location.getLatitude();
+            lng = location.getLongitude();
 
+            StringBuilder strBuf2 = new StringBuilder();
+            strBuf2.append(lat);
+            strBuf2.append(",");
+            strBuf2.append(lng);
+
+            loc = String.valueOf(strBuf2);
+            Log.d("loc",loc);
+
+            searchMap(loc);
+        }
     }
+
+
+
+
+
+
 
 
     public void searchMap(String argloc){
@@ -273,6 +302,9 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
             }
         });
     }
+
+
+
 
 
 
@@ -347,9 +379,12 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                         break;
                 }
                 break;
-
         }
     }
+
+
+
+
 
 
     // FusedLocationApiによるlocation updatesをリクエスト
@@ -370,19 +405,11 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                                 MapsActivity_10.this,
                                 android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
                                 PackageManager.PERMISSION_GRANTED) {
-                            // TODO:呼び出しを検討する
-                            // ActivityCompat＃requestPermissions
-                            //ここで不足しているアクセス権を要求し、次に上書きする
-                            // public void onRequestPermissionsResult（int requestCode、String []アクセス許可、
-                            // int [] grantResults）
-                            //ユーザがパーミッションを許可した場合を処理します。ドキュメントを参照してください
-                            //詳細についてはActivityCompat＃requestPermissionsのドキュメントを参照してください。
+
                             return;
                         }
                         fusedLocationProviderClient.requestLocationUpdates(
                                 locationRequest, locationCallback, Looper.myLooper());
-
-
 
                     }
 
@@ -426,9 +453,12 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
 
 
+
+
+
+
     private void stopLocationUpdates() {
-        textLog += "onStop()\n";
-        textView.setText(textLog);
+
 
         if (!reqestingLocationUpdates) {
             Log.d("debug", "stopLocationUpdates: " +
@@ -448,13 +478,13 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                         });
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // バッテリー消費を鑑みLocation requestを止める
-        stopLocationUpdates();
-    }
-
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        // バッテリー消費を鑑みLocation requestを止める
+//        stopLocationUpdates();
+//    }
+//
 
 
 
