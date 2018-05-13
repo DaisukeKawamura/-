@@ -6,7 +6,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.location.*;
+import android.hardware.Camera;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -74,6 +76,10 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
     private static final int REQUEST_CHECK_SETTINGS = 0x1;
     private int priority = 0;
     private double lat,lng;
+    private LatLng latlng;
+
+    String[] foodArray;
+    String food;
 
     String loc = null;
 
@@ -103,6 +109,10 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         settingsClient = LocationServices.getSettingsClient(this);
 
         priority = 0;
+
+        foodArray =  new String[]{"オムライス","うどん","カレー","焼肉","鍋","ラーメン","海鮮","お好み焼き","串カツ","とんかつ","寿司"};
+
+
 
 
         //「位置情報関連のメソッド」
@@ -161,30 +171,13 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         int number;
         number = random.nextInt(11);
 
-        if (number == 0) {
-            textView.setText("オムライス");
-        } else if (number == 1) {
-            textView.setText("うどん");
-        } else if (number == 2) {
-            textView.setText("カレー");
-        } else if (number == 3) {
-            textView.setText("焼肉");
-        } else if (number == 4) {
-            textView.setText("鍋");
-        } else if (number == 5) {
-            textView.setText("ラーメン");
-        } else if (number == 6) {
-            textView.setText("海鮮");
-        } else if (number == 7) {
-            textView.setText("お好み焼き");
-        } else if (number == 8) {
-            textView.setText("串カツ");
-        } else if (number == 9) {
-            textView.setText("とんかつ");
-        }else if (number == 10){
-            textView.setText("寿司");
-        }
+        food = foodArray[number];
+        textView.setText(food);
+
     }
+
+
+
 
 
 
@@ -199,7 +192,8 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
 
 
-    //locationのコールバック位を受け取る
+
+    //locationのコールバック値を受け取る
     public void createLocationCallback(){
         locationCallback = new LocationCallback(){
             @Override
@@ -279,7 +273,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
     public void searchMap(String argloc){
 
-        Call<Responce> mResultCall = mService.requestPlaces(argloc,750,"restaurant", API_KEY);
+        Call<Responce> mResultCall = mService.requestPlaces(argloc,750, food , API_KEY);
 
         mResultCall.enqueue(new retrofit2.Callback<Responce>() {
             @Override
@@ -287,6 +281,13 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                 List<Result> results = response.body().getResults();
 
                 for (Result r:results){
+                    Location location = r.getGeometry().getLocation();
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    String name = r.getName();
+
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(name));
+
+
                     Log.d("geometry", r.getGeometry() + "\n");
                     Log.d("icon", r.getIcon() + "\n");
                     Log.d("id", r.getId() + "\n");
@@ -294,6 +295,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                     Log.d("place_id", r.getPlace_id() + "\n");
                     Log.d("rating", r.getRating() + "\n");
                 }
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
             }
 
             @Override

@@ -1,0 +1,38 @@
+package android.lifeistech.com.foode;
+
+import com.google.gson.annotations.SerializedName;
+
+/**
+ * Created by kawamuradaisuke on 2018/05/13.
+ */
+
+public class Northeast {
+
+
+
+    private static final String TAG = Northeast.class.getSimpleName();
+    private final Northeast self = this;
+
+    @SerializedName("lat")
+    private double lat;
+
+    @SerializedName("lng")
+    private double lng;
+
+
+
+    public double getLat(){
+        return lat;
+    }
+    public void setLat(double lat){
+        this.lat = lat;
+    }
+
+
+    public double getLng(){
+        return lng;
+    }
+    public void setLng(double lng){
+        this.lng = lng;
+    }
+}
