@@ -18,16 +18,10 @@ public class Geometry {
     @SerializedName("location")
     private Location location;
 
-    @SerializedName("viewport")
-    private Viewport viewport;
 
 
     public Geometry(Location location){
         this.location = location;
-    }
-
-    public Geometry(Viewport viewport){
-        this.viewport = viewport;
     }
 
     public Location getLocation(){
@@ -37,14 +31,5 @@ public class Geometry {
     public void setLocation(Location location) {
         this.location = location;
     }
-
-    public Viewport getViewport(){
-        return viewport;
-    }
-
-    public void setViewport(Viewport viewport){
-        this.viewport = viewport;
-    }
-
 
 }
