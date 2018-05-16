@@ -15,22 +15,14 @@ import retrofit2.http.GET;
 public interface PlaceAPIService {
 
     @Headers("Accept-Language: ja")
-    @GET("/maps/api/place/search/json?")
-    Call<Responce> requestPlaces(@Query("location") String location,
+    @GET("/maps/api/place/nearsearch/json?")
+    Call<APIResponse> requestPlaces(@Query("location") String location,
                                  @Query("radius") int radius,
                                  @Query("type") String type,
                                  @Query("key") String key);
-
-
-
-//    @Headers("Accept-Language: ja")
-//    @GET("/maps/api/place/search/json?")
-//    Call<Responce> requestPlaces(@Query("location")String location,
-//                                 @Query("radius")int radius,
-//                                 @Query("keyword")String keyword,
-//                                 @Query("key")String key);
-
 }
+
+
 
 
 

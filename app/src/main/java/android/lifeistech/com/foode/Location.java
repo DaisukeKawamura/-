@@ -7,14 +7,10 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Location {
-
     private static final String TAG = Location.class.getSimpleName();
     private final Location self = this;
 
-    @SerializedName("lat")
     private double lat;
-
-    @SerializedName("lng")
     private double lng;
 
     public Location(double lat, double lng) {

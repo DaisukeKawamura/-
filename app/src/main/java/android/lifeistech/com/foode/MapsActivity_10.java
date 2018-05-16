@@ -1,6 +1,7 @@
 package android.lifeistech.com.foode;
 
 import android.*;
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -8,16 +9,20 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.location.Location;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.location.LocationListener;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -41,6 +46,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -51,6 +59,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.location.LocationManager.GPS_PROVIDER;
 
 
 public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallback {
@@ -68,6 +78,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private Location location;
+    LocationManager locationManager;
 
     private String lastUpDateTime;
     private Boolean reqestingLocationUpdates;
@@ -111,14 +122,25 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         mService = mRetrofit.create(PlaceAPIService.class);
 
 
-        //FusedLocationProviderClientの使用を可能にする
-        fusedLocationClient =
-                LocationServices.getFusedLocationProviderClient(this);
-        settingsClient = LocationServices.getSettingsClient(this);
+//        //FusedLocationProviderClientの使用を可能にする
+//        fusedLocationClient =
+//                LocationServices.getFusedLocationProviderClient(this);
+//        settingsClient = LocationServices.getSettingsClient(this);
 
         priority = 0;
 
         foodArray =  new String[]{"オムライス","うどん","カレー","焼肉","鍋","ラーメン","海鮮","お好み焼き","串カツ","とんかつ","寿司"};
+
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+        }
+        else{
+
+            searchMap(loc);
+
+//
+        }
 
 
         //「位置情報関連のメソッド」
@@ -127,10 +149,6 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         createLocationRequest();
         buildLocationSettingsRequest();
 
-
-        //実際にMap上に現在地が表示されるようにデータをップロードするメソッド
-        startLocationUpdates();
-        stopLocationUpdates();
     }
 
     /**
@@ -158,10 +176,18 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
 
 
+
     public void search(View v){
+
+        startLocationUpdates();
+
+        stopLocationUpdates();
+
         LatLng osaka = new LatLng(34.6937378, 135.5021651);
 
         loc = String.valueOf(osaka);
+
+        searchMap(loc);
 
 
     }
@@ -198,6 +224,48 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
 
 
+    public void searchMap(String argloc) {
+
+        Call<APIResponse> mResultCall = mService.requestPlaces(argloc, 750, "restaurant", API_KEY);
+
+
+        mResultCall.enqueue(new retrofit2.Callback<APIResponse>() {
+            @Override
+            public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
+
+                List<Result> results = response.body().getResults();
+
+                for (Result r : results) {
+                    Log.d("name", r.getName() + "\n");
+
+
+//                    Location location = r.getGeometry().getLocation();
+//                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+//                    String name = r.getName();
+//
+//                    mMap.addMarker(new MarkerOptions().position(latLng).title(name));
+
+
+//                    Log.d("geometry", r.getGeometry() + "\n");
+//                    Log.d("icon", r.getIcon() + "\n");
+//                    Log.d("id", r.getId() + "\n");
+//                    Log.d("place_id", r.getPlace_id() + "\n");
+//                    Log.d("rating", r.getRating() + "\n");
+                }
+//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
+            }
+
+            @Override
+            public void onFailure(Call<APIResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
+
+
     //locationのコールバック値を受け取る
     public void createLocationCallback(){
         locationCallback = new LocationCallback() {
@@ -205,7 +273,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
 
-                location = locationResult.getLastLocation();
+              location = locationResult.getLastLocation();
 
 
                 lastUpDateTime = DateFormat.getTimeInstance().format(new Date());
@@ -269,7 +337,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
             loc = String.valueOf(strBuf2);
             Log.d("loc", loc);
 
-            searchMap(loc);
+
 
 
         }
@@ -277,42 +345,6 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
     }
 
 
-    public void searchMap(String argloc) {
-
-        Call<Responce> mResultCall = mService.requestPlaces(argloc, 750, "restaurant", API_KEY);
-
-        mResultCall.enqueue(new retrofit2.Callback<Responce>() {
-            @Override
-            public void onResponse(Call<Responce> call, Response<Responce> response) {
-
-                List<Result> results = response.body().getResults();
-
-                for (Result r : results) {
-                    Location location = r.getGeometry().getLocation();
-                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    String name = r.getName();
-
-                    mMap.addMarker(new MarkerOptions().position(latLng).title(name));
-
-
-                    Log.d("name", r.getName() + "\n");
-
-
-//                    Log.d("geometry", r.getGeometry() + "\n");
-//                    Log.d("icon", r.getIcon() + "\n");
-//                    Log.d("id", r.getId() + "\n");
-//                    Log.d("place_id", r.getPlace_id() + "\n");
-//                    Log.d("rating", r.getRating() + "\n");
-                }
-//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
-            }
-
-            @Override
-            public void onFailure(Call<Responce> call, Throwable t) {
-
-            }
-        });
-    }
 
     @SuppressLint("RestrictedApi")
     private void createLocationRequest() {
