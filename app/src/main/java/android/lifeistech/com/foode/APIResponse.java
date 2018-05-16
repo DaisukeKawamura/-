@@ -14,16 +14,16 @@ public class APIResponse {
 
     private List<Result> results;
 
+
     public APIResponse(List<Result> results) {
         this.results = results;
     }
 
-    public List<Result> getResults() {
+    public List<Result> getResults(){
         return results;
     }
 
     public void setResults(List<Result> results) {
         this.results = results;
     }
-
 }
