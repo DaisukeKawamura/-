@@ -18,7 +18,7 @@ public class APIResponse {
         this.results = results;
     }
 
-    public List<Result> getResults(){
+    public static List<Result> getResults(){
         return results;
     }
 
