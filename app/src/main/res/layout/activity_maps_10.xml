@@ -26,8 +26,9 @@
             android:layout_weight="0.8"
             android:gravity="center"
             android:text="ボタンを押してください"
-            android:textColor="#F2F2F2"
-            android:textSize="30sp" />
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
 
 

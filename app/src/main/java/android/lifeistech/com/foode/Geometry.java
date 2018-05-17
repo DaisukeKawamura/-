@@ -1,6 +1,7 @@
 package android.lifeistech.com.foode;
 
 import android.location.Location;
+import android.util.Log;
 import android.view.View;
 
 import com.google.gson.annotations.SerializedName;
@@ -14,7 +15,7 @@ public class Geometry {
     private static final String TAG = Geometry.class.getSimpleName();
     private final Geometry self = this;
 
-    private Location location;
+    public  Location location;
 
     public Geometry(Location location) {
         this.location = location;

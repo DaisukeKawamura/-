@@ -9,17 +9,17 @@ import java.security.PrivateKey;
  * Created by kawamuradaisuke on 2018/05/11.
  */
 
-public class Result {
+public  class  Result {
 
     private static final String TAG = Result.class.getSimpleName();
     private final Result self = this;
 
-    private Geometry geometry;
+    public  Geometry geometry;
+    public  String name;
+    public  String rating;
     private String icon;
     private String id;
-    private String name;
     private String place_id;
-    private String rating;
     private String reference;
     private String[] types;
     private String vicinity;
@@ -36,7 +36,7 @@ public class Result {
         this.vicinity = vicinity;
     }
 
-    public Geometry getGeometry() {
+    public  Geometry getGeometry() {
         return geometry;
     }
 
@@ -60,7 +60,7 @@ public class Result {
         this.id = id;
     }
 
-    public String getName() {
+    public  String getName() {
         return name;
     }
 

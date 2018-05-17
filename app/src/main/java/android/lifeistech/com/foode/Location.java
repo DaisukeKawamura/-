@@ -10,27 +10,27 @@ public class Location {
     private static final String TAG = Location.class.getSimpleName();
     private final Location self = this;
 
-    private double lat;
-    private double lng;
+    public static double latitude;
+    public static double longtitude;
 
     public Location(double lat, double lng) {
-        this.lat = lat;
-        this.lng = lng;
+        this.latitude = latitude;
+        this.longtitude = longtitude;
     }
 
-    public double getLat() {
-        return lat;
+    public static double getLatitude() {
+        return latitude;
     }
 
-    public void setLat(double lat) {
-        this.lat = lat;
+    public void setLat(double latitude) {
+        this.latitude = latitude;
     }
 
-    public double getLng() {
-        return lng;
+    public static double getLng() {
+        return longtitude;
     }
 
-    public void setLng(double lng) {
-        this.lng = lng;
+    public  void setLng(double longtitude) {
+        this.longtitude = longtitude;
     }
 }

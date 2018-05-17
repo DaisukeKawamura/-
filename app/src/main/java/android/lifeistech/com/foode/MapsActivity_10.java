@@ -40,6 +40,7 @@ import android.location.LocationManager;
 
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -49,6 +50,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import android.lifeistech.com.foode.Result;
 
 
 public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallback {
@@ -74,6 +77,16 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
     private int priority = 0;
     private double lat,lng;
     private LatLng latlng;
+
+    private double[] latitude;
+    private double[] longtitude;
+    private String[] nameR;
+    private Result result;
+
+
+
+
+
 
     String loc = null;
 
@@ -119,9 +132,6 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
         foodArray =  new String[]{"オムライス","うどん","カレー","焼肉","鍋","ラーメン","海鮮","お好み焼き","串カツ","とんかつ","寿司"};
 
-
-
-
         //「位置情報関連のメソッド」
         //現在地の情報を求めるリクエストを渡して、結果が帰ってくる設定のメソッドの呼び出し
         createLocationCallback();
@@ -155,14 +165,32 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
 
 
-
     public void search(View v){
 
         startLocationUpdates();
 
+
         stopLocationUpdates();
 
         searchMap("34.6937378, 135.5021651");
+
+
+        List<Result> results = new ArrayList<>();
+
+
+        for (int i = 0; i<results.size(); i++){
+
+            latitude[i] = APIResponse.results.get(i).geometry.location.getLatitude();
+            longtitude[i]= APIResponse.results.get(i).geometry.location.getLongitude();
+            nameR[i] = APIResponse.results.get(i).getName();
+
+
+            latlng = new LatLng(latitude[i],longtitude[i]);
+
+
+            mMap.addMarker(new MarkerOptions().position(latlng).title(nameR[i]));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+        }
 
     }
 
@@ -210,6 +238,8 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                    // レスポンスからResultのリストを取得
                 List<Result> results = response.body().getResults();
 
+
+                //for文にNullPointerExceptionのエラー出る
                 for (Result r : results) {
                     Log.d("name", r.getName() + "\n");
                     Log.d("geometry", r.getGeometry() + "\n");

@@ -25,8 +25,7 @@ public interface PlaceAPIService {
 
 
 
-
-
+//location=&radius=&type=&keyword=&key=
 //https://maps.googleapis.com/maps/api/place/search/json?location=34.6937378,135.5021651&radius=750&types=カレー+in+Osaka&key=AIzaSyDonRgMSNGSG_1dF2YehCscx2eHRYp5JZQ
 //https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Osaka&key=AIzaSyDonRgMSNGSG_1dF2YehCscx2eHRYp5JZQ
 //https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Osaka&key=AIzaSyAEJJjYOFLqiU550af8F4hRuO1bg1Ov-k4
