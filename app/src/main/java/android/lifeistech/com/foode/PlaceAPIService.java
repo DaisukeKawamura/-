@@ -19,6 +19,7 @@ public interface PlaceAPIService {
     Call<APIResponse> requestPlaces(@Query("location") String location,
                                     @Query("radius") int radius,
                                     @Query("type") String type,
+                                    @Query("keyword") String keyword,
                                     @Query("key") String key);
 }
 

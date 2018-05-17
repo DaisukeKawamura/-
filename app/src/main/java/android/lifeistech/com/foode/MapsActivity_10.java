@@ -200,7 +200,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
     public void searchMap(String argloc) {
 
-        Call<APIResponse> mResultCall = mService.requestPlaces(argloc,750,"restaurant",API_KEY);
+        Call<APIResponse> mResultCall = mService.requestPlaces(argloc,750, "restaurant", food ,API_KEY);
 
         mResultCall.enqueue(new Callback<APIResponse>() {
             @Override
