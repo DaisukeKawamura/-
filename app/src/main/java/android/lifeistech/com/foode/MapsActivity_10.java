@@ -163,7 +163,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         stopLocationUpdates();
 
         searchMap("34.6937378, 135.5021651");
-        
+
     }
 
 
@@ -212,6 +212,12 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
                 for (Result r : results) {
                     Log.d("name", r.getName() + "\n");
+                    Log.d("geometry", r.getGeometry() + "\n");
+                    Log.d("rating", r.getRating() + "\n");
+                    Log.d("reference", r.getReference() + "\n");
+                    Log.d("id", r.getId() + "\n");
+                    Log.d("icon", r.getIcon() + "\n");
+                    Log.d("vicinity", r.getVicinity() + "\n");
                 }
 
             }
