@@ -162,13 +162,8 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
         stopLocationUpdates();
 
-        LatLng osaka = new LatLng(34.6937378, 135.5021651);
-
-        loc = String.valueOf(osaka);
-
-        searchMap(loc);
-
-
+        searchMap("34.6937378, 135.5021651");
+        
     }
 
 
