@@ -14,15 +14,26 @@ public  class  Result {
     private static final String TAG = Result.class.getSimpleName();
     private final Result self = this;
 
+
+    @SerializedName("geometry")
     public  Geometry geometry;
+    @SerializedName("name")
     public  String name;
+    @SerializedName("rating")
     public  String rating;
+    @SerializedName("icon")
     private String icon;
+    @SerializedName("id")
     private String id;
+    @SerializedName("place_id")
     private String place_id;
+    @SerializedName("reference")
     private String reference;
+    @SerializedName("types")
     private String[] types;
+    @SerializedName("vicinity")
     private String vicinity;
+
 
     public Result(Geometry geometry, String icon, String id, String name, String place_id, String rating, String reference, String[] types, String vicinity) {
         this.geometry = geometry;

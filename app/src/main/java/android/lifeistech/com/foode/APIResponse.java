@@ -12,13 +12,13 @@ public class APIResponse {
     private static final String TAG = APIResponse.class.getSimpleName();
     private final APIResponse self = this;
 
-    public static List<Result> results;
+    public  List<Result> results;
 
     public  APIResponse(List<Result> results) {
         this.results = results;
     }
 
-    public static List<Result> getResults(){
+    public  List<Result> getResults(){
         return results;
     }
 

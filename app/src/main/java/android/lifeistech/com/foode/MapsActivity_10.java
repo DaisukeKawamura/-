@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -138,6 +139,11 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         createLocationRequest();
         buildLocationSettingsRequest();
 
+
+
+
+
+
     }
 
     /**
@@ -178,19 +184,19 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         List<Result> results = new ArrayList<>();
 
 
-        for (int i = 0; i<results.size(); i++){
-
-            latitude[i] = APIResponse.results.get(i).geometry.location.getLatitude();
-            longtitude[i]= APIResponse.results.get(i).geometry.location.getLongitude();
-            nameR[i] = APIResponse.results.get(i).getName();
-
-
-            latlng = new LatLng(latitude[i],longtitude[i]);
-
-
-            mMap.addMarker(new MarkerOptions().position(latlng).title(nameR[i]));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-        }
+//        for (int i = 0; i<results.size(); i++){
+//
+//            latitude[i] =results.get(i).geometry.location.getLatitude();
+//            longtitude[i]= results.get(i).geometry.location.getLongitude();
+//            nameR[i] = results.get(i).getName();
+//
+//
+//            latlng = new LatLng(latitude[i],longtitude[i]);
+//
+//
+//            mMap.addMarker(new MarkerOptions().position(latlng).title(nameR[i]));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+//        }
 
     }
 
@@ -238,6 +244,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                    // レスポンスからResultのリストを取得
                 List<Result> results = response.body().getResults();
 
+                Log.e("TAG",results.toString());
 
                 //for文にNullPointerExceptionのエラー出る
                 for (Result r : results) {
@@ -250,6 +257,26 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                     Log.d("vicinity", r.getVicinity() + "\n");
                 }
 
+
+
+
+
+                for (int i = 0; i<results.size(); i++){
+
+
+                    latlng = new LatLng(
+                            results.get(i).geometry.location.getLat(),
+                            results.get(i).geometry.location.getLng());
+
+                    Log.d("lat", String.valueOf(results.get(i).geometry.location.getLat()));
+                    Log.d("lng", String.valueOf(results.get(i).geometry.location.getLng()));
+
+
+                    mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+
+                    
+                }
             }
 
             @Override
@@ -257,6 +284,8 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
             }
         });
+
+
 
     }
 

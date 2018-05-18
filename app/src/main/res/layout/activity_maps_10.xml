@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/foode">
-
+    android:background="#F7A966">
 
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/foode">
+        android:orientation="vertical">
 
 
         <TextView
@@ -26,25 +24,24 @@
             android:layout_weight="0.8"
             android:gravity="center"
             android:text="ボタンを押してください"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
 
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_weight="6"
-        tools:context="android.lifeistech.com.foode.MapsActivity_10"
-        map:cameraZoom="12.0"/>
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="6"
+            map:cameraZoom="12.0"
+            tools:context="android.lifeistech.com.foode.MapsActivity_10" />
 
 
         <LinearLayout
@@ -76,7 +73,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 
 </RelativeLayout>

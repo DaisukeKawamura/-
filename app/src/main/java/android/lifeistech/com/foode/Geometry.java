@@ -1,6 +1,5 @@
 package android.lifeistech.com.foode;
 
-import android.location.Location;
 import android.util.Log;
 import android.view.View;
 
@@ -15,6 +14,8 @@ public class Geometry {
     private static final String TAG = Geometry.class.getSimpleName();
     private final Geometry self = this;
 
+
+    @SerializedName("location")
     public  Location location;
 
     public Geometry(Location location) {

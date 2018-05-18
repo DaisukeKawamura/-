@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="android.lifeistech.com.foode.EditActivity"
-    android:background="@drawable/foode">
+    android:background="#F7A966"
+    tools:context="android.lifeistech.com.foode.EditActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,8 +19,9 @@
             android:layout_weight="1.5"
             android:gravity="center"
             android:text="三つの選択肢を設ける→決定ボタンでランダムで表示"
-            android:textColor="#F2F2F2"
-            android:textSize="25sp" />
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:textStyle="normal" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,8 +37,9 @@
                 android:ems="10"
                 android:hint="追加する食べ物①"
                 android:inputType="textPersonName"
-                android:textColor="#F2F2F2"
-                android:textColorHint="#F2F2F2" />
+                android:textColor="#000000"
+                android:textColorHint="#000000"
+                android:textStyle="normal" />
 
         </LinearLayout>
 
@@ -55,8 +57,8 @@
                 android:ems="10"
                 android:hint="追加する食べ物②"
                 android:inputType="textPersonName"
-                android:textColor="#F2F2F2"
-                android:textColorHint="#F2F2F2" />
+                android:textColor="#000000"
+                android:textColorHint="#000000" />
 
         </LinearLayout>
 
@@ -76,8 +78,8 @@
                 android:ems="10"
                 android:hint="追加する食べ物③"
                 android:inputType="textPersonName"
-                android:textColor="#F2F2F2"
-                android:textColorHint="#F2F2F2" />
+                android:textColor="#000000"
+                android:textColorHint="#000000" />
 
         </LinearLayout>
 
@@ -97,8 +99,6 @@
                 android:textColorHint="#F2F2F2" />
         </LinearLayout>
     </LinearLayout>
-
-
 
 
 </RelativeLayout>
