@@ -38,10 +38,10 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_weight="8"
-            tools:context="android.lifeistech.com.foode.MapsActivity_Select" />
+            tools:context="android.lifeistech.com.foode.MapsActivity_Select"
+            map:cameraZoom = "15.0
+"/>
 
 
         <LinearLayout
@@ -49,14 +49,6 @@
             android:layout_height="0dp"
             android:layout_weight="1.5"
             android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/button5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="random2"
-                android:text="３択からランダム" />
 
             <Button
                 android:id="@+id/button4"

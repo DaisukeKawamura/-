@@ -22,10 +22,10 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/button3"
         android:layout_alignEnd="@+id/button3"
-        android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/button3"
-        android:layout_marginBottom="22dp"
+        android:layout_marginBottom="46dp"
         android:onClick="free"
         android:text="設定された10択から" />
 
@@ -33,9 +33,9 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button2"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="52dp"
         android:onClick="constraint"
         android:text="選択肢を自分で設定" />
 

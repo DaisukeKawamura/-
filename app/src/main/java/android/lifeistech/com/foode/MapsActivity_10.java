@@ -155,7 +155,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        // Add a marker in Osaka and move the camera
         LatLng osaka = new LatLng(34.6937378, 135.5021651);
         mMap.addMarker(new MarkerOptions().position(osaka).title("大阪"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(osaka));
@@ -167,12 +167,9 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
     public void search(View v){
 
         startLocationUpdates();
-
-
         stopLocationUpdates();
 
         searchMap("34.6937378, 135.5021651");
-
 
         List<Result> results = new ArrayList<>();
     }
@@ -187,9 +184,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         textView.setText(food);
     }
 
-    public void back(View v) {
-        finish();
-    }
+
 
 
     public void searchMap(String argloc) {
