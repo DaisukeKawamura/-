@@ -3,6 +3,7 @@ package android.lifeistech.com.foode;
 import android.annotation.SuppressLint;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -30,7 +31,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -218,9 +221,6 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
 
 
-
-
-
     public void back(View v) {
         finish();
     }
@@ -272,12 +272,43 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                     Log.d("lng", String.valueOf(results.get(i).geometry.location.getLng()));
 
 
-                    mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+                    double rat = results.get(i).rating;
 
-                    
+                    Marker maker;
+
+                    if (rat <= 1.0){
+
+                       maker = mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+
+                    }else if (1 < rat && rat <=2 ){
+
+                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+
+                    }else if (2 < rat && rat <=3){
+
+                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+
+                    }else if (3 < rat && rat <=4){
+
+                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+
+                    }else if (rat >4){
+
+                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+
+                    }
+
                 }
+
+
             }
+
+
 
             @Override
             public void onFailure(Call<APIResponse> call, Throwable t) {

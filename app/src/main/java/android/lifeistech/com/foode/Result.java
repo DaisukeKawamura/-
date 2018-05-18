@@ -20,7 +20,7 @@ public  class  Result {
     @SerializedName("name")
     public  String name;
     @SerializedName("rating")
-    public  String rating;
+    public  double rating;
     @SerializedName("icon")
     private String icon;
     @SerializedName("id")
@@ -35,7 +35,7 @@ public  class  Result {
     private String vicinity;
 
 
-    public Result(Geometry geometry, String icon, String id, String name, String place_id, String rating, String reference, String[] types, String vicinity) {
+    public Result(Geometry geometry, String icon, String id, String name, String place_id, double rating, String reference, String[] types, String vicinity) {
         this.geometry = geometry;
         this.icon = icon;
         this.id = id;
@@ -87,11 +87,11 @@ public  class  Result {
         this.place_id = place_id;
     }
 
-    public String getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
