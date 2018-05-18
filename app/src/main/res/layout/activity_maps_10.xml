@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#fff8e1">
 
 
     <LinearLayout
@@ -22,10 +23,10 @@
             android:layout_marginTop="15dp"
             android:layout_weight="0.8"
             android:gravity="center"
-            android:text="ボタンを押してください"
+            android:text="何が食べたい？？"
             android:textColor="#000000"
             android:textSize="30sp"
-            android:textStyle="normal" />
+            android:textStyle="normal|bold|italic" />
 
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -52,19 +53,25 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="3"
+                android:background="#ffd95b"
                 android:onClick="random"
-                android:text="10択からランダム"
+                android:text="選ぶ"
                 android:textColor="#000000" />
 
             <Button
                 android:id="@+id/button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="3"
+                android:background="#ffd95b"
                 android:onClick="search"
-                android:text="GoogleMapで検索"
+                android:text="決定！！"
                 android:textColor="#000000" />
 
         </LinearLayout>

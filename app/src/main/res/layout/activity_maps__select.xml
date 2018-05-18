@@ -3,7 +3,8 @@
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#fff8e1">
 
 
     <LinearLayout
@@ -24,10 +25,10 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="３択から選ばれた食べ物"
+                android:text="食べたい！！！"
                 android:textColor="#000000"
                 android:textSize="30sp"
-                android:textStyle="normal" />
+                android:textStyle="normal|bold|italic" />
         </LinearLayout>
 
 
@@ -39,9 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="8"
-            tools:context="android.lifeistech.com.foode.MapsActivity_Select"
-            map:cameraZoom = "15.0
-"/>
+            map:cameraZoom="15.0
+"
+            tools:context="android.lifeistech.com.foode.MapsActivity_Select" />
 
 
         <LinearLayout
@@ -54,9 +55,13 @@
                 android:id="@+id/button4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
+                android:background="#ffd95b"
                 android:onClick="search2"
-                android:text="検索" />
+                android:text="SearchMap" />
 
         </LinearLayout>
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff8e1"
     tools:context="android.lifeistech.com.foode.EditActivity">
 
     <LinearLayout
@@ -17,10 +18,10 @@
             android:layout_height="0dp"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="三つの選択肢を設ける→決定ボタンでランダムで表示"
+            android:text="何が食べたい？？"
             android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="normal" />
+            android:textSize="30sp"
+            android:textStyle="normal|bold|italic" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="追加する食べ物①"
+                android:text="Food①"
                 android:textAlignment="textStart"
                 android:textColor="#000000"
                 android:textSize="24sp" />
@@ -62,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="6"
-                android:text="追加する食べ物②"
+                android:text="Food②"
                 android:textColor="#000000"
                 android:textSize="24sp" />
 
@@ -89,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="6"
-                android:text="追加する食べ物③"
+                android:text="Food③"
                 android:textColor="#000000"
                 android:textSize="24sp" />
 
@@ -117,9 +118,12 @@
                 android:id="@+id/button6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
+                android:background="#ffd95b"
                 android:onClick="decision"
-                android:text="この三項目で決定"
+                android:text="この３つに決まり！"
                 android:textColorHint="#F2F2F2" />
         </LinearLayout>
     </LinearLayout>
