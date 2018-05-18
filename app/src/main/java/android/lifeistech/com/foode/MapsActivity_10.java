@@ -1,16 +1,19 @@
 package android.lifeistech.com.foode;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +61,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import android.lifeistech.com.foode.Result;
 
 
-public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener {
 
 
     private Retrofit mRetrofit;
@@ -98,6 +101,8 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
     String[] foodArray;
     String food;
 
+    List<Result> results;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +138,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         createLocationRequest();
         buildLocationSettingsRequest();
 
+
     }
 
     /**
@@ -152,6 +158,8 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         LatLng osaka = new LatLng(34.6937378, 135.5021651);
         mMap.addMarker(new MarkerOptions().position(osaka).title("大阪"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(osaka));
+
+        mMap.setOnMarkerClickListener(this);
     }
 
 
@@ -193,7 +201,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
 
                    // レスポンスからResultのリストを取得
-                List<Result> results = response.body().getResults();
+                results = response.body().getResults();
 
                 Log.e("TAG",results.toString());
 
@@ -221,7 +229,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
                     double rat = results.get(i).rating;
 
-                    Marker maker;
+                    Marker maker = null;
 
                     LatLng osaka = new LatLng(34.6937378, 135.5021651);
 
@@ -251,9 +259,8 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(osaka));
 
                     }
-
+                    maker.setTag(i);
                 }
-
             }
 
             @Override
@@ -261,6 +268,18 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
             }
         });
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        int clickCount = (int) marker.getTag();
+        String vicinity = results.get(clickCount).getVicinity();
+        String place = "geo:0,0?q=" + vicinity;
+        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(place));
+        startActivity(intent);
+
+        return false;
     }
 
 
@@ -489,5 +508,8 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         // バッテリー消費を鑑みLocation requestを止める
         stopLocationUpdates();
     }
+
+
+
 }
 
