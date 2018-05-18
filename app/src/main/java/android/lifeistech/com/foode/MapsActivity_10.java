@@ -86,12 +86,6 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
     private double[] longtitude;
     private String[] nameR;
     private Result result;
-
-
-
-
-
-
     String loc = null;
 
     private final String API_KEY = "AIzaSyDonRgMSNGSG_1dF2YehCscx2eHRYp5JZQ";
@@ -103,9 +97,6 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
     String[] foodArray;
     String food;
-
-
-
 
 
     @Override
@@ -142,11 +133,6 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         createLocationRequest();
         buildLocationSettingsRequest();
 
-
-
-
-
-
     }
 
     /**
@@ -166,12 +152,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
         LatLng osaka = new LatLng(34.6937378, 135.5021651);
         mMap.addMarker(new MarkerOptions().position(osaka).title("大阪"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(osaka));
-
     }
-
-
-
-
 
 
     public void search(View v){
@@ -185,27 +166,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
 
         List<Result> results = new ArrayList<>();
-
-
-//        for (int i = 0; i<results.size(); i++){
-//
-//            latitude[i] =results.get(i).geometry.location.getLatitude();
-//            longtitude[i]= results.get(i).geometry.location.getLongitude();
-//            nameR[i] = results.get(i).getName();
-//
-//
-//            latlng = new LatLng(latitude[i],longtitude[i]);
-//
-//
-//            mMap.addMarker(new MarkerOptions().position(latlng).title(nameR[i]));
-//            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-//        }
-
     }
-
-
-
-
 
 
     public void random(View v) {
@@ -215,21 +176,11 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
         food = foodArray[number];
         textView.setText(food);
-
     }
-
-
-
 
     public void back(View v) {
         finish();
     }
-
-
-
-
-
-
 
 
     public void searchMap(String argloc) {
@@ -257,10 +208,6 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
                     Log.d("vicinity", r.getVicinity() + "\n");
                 }
 
-
-
-
-
                 for (int i = 0; i<results.size(); i++){
 
 
@@ -276,52 +223,45 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
                     Marker maker;
 
+                    LatLng osaka = new LatLng(34.6937378, 135.5021651);
+
                     if (rat <= 1.0){
 
-                       maker = mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+                       maker = mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(osaka));
 
                     }else if (1 < rat && rat <=2 ){
 
-                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(osaka));
 
                     }else if (2 < rat && rat <=3){
 
-                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(osaka));
 
                     }else if (3 < rat && rat <=4){
 
-                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(osaka));
 
                     }else if (rat >4){
 
-                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+                        maker =  mMap.addMarker(new MarkerOptions().position(latlng).title(results.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(osaka));
 
                     }
 
                 }
 
-
             }
-
-
 
             @Override
             public void onFailure(Call<APIResponse> call, Throwable t) {
 
             }
         });
-
-
-
     }
-
-
-
 
 
 
@@ -340,10 +280,6 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
             }
         };
     }
-
-
-
-
 
 
 
@@ -395,12 +331,7 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
 
             loc = String.valueOf(strBuf2);
             Log.d("loc", loc);
-
-
-
-
         }
-
     }
 
 
