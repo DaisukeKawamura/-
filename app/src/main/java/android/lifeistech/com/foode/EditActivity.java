@@ -22,22 +22,25 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-
-
         editText1 = (EditText)findViewById(R.id.editText1);
         editText2 = (EditText)findViewById(R.id.editText2);
         editText3 = (EditText)findViewById(R.id.editText3);
-
-
     }
 
 
 
 
 
+
+
     public void decision(View v){
+        //ランダムで3択の中から一択決定
+
+
         Intent intent = new Intent(this,MapsActivity_Select.class);
         startActivity(intent);
+
+
     }
 
 

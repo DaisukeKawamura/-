@@ -50,6 +50,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -274,13 +275,28 @@ public class MapsActivity_10 extends FragmentActivity implements OnMapReadyCallb
     public boolean onMarkerClick(Marker marker) {
 
         int clickCount = (int) marker.getTag();
-        String vicinity = results.get(clickCount).getVicinity();
-        String place = "geo:0,0?q=" + vicinity;
-        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(place));
+
+        //出発地　「大阪市役所」
+        String latitude = "34.6937378";
+        String longtitude = "135.5021651";
+
+        //目的地の緯度・経度
+        double latitude2 = results.get(clickCount).geometry.location.getLat();
+        double longtitude2 = results.get(clickCount).geometry.location.getLng();
+
+        String str = String.format(Locale.US,
+                "http://maps.google.com/maps?saddr=%s,%s&daddr=%f,%f",
+                latitude,longtitude,latitude2,longtitude2);
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(str));
         startActivity(intent);
 
         return false;
     }
+
+
 
 
 
